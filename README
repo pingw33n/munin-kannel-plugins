@@ -1,0 +1,15 @@
+Munin plugins to monitor Kannel. 
+
+Plugins included:
+
+- SMS throughput (sent/received message rate)
+- SMS store size
+- SMS queue size
+- DLR throughput (sent/received DLR rate)
+- DLR queue size
+
+Configuration:
+
+[kannel_*]
+user nobody
+env.STATUS_URL http://localhost:13000/status.xml
