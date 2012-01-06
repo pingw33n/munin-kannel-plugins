@@ -4,7 +4,10 @@ import os
 
 def get_status(url = os.environ['STATUS_URL']):
     response = urllib2.urlopen(url)
-    xml = XML(response.read())
+    try:
+        xml = XML(response.read())
+    finally:
+        response.close()
 
     result = {}
 
