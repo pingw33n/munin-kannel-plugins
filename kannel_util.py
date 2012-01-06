@@ -24,4 +24,24 @@ def get_status(url = os.environ['STATUS_URL']):
     result_d['received'] = {'total': int(el.findtext('received/total'))}
     result_d['sent'] = {'total': int(el.findtext('sent/total'))}
     result_d['queued'] = int(el.findtext('queued'))
+
+    els = xml.find('smscs').findall('smsc')
+    result_d = result['smscs'] = []
+    for el in els:
+        result_d.append({
+            'id': el.findtext('id'),
+            'admin_id': el.findtext('admin-id'),
+            'received': {
+                'sms': int(el.findtext('received/sms')),
+                'dlr': int(el.findtext('received/dlr'))
+            },
+            'sent': {
+                'sms': int(el.findtext('sent/sms')),
+                'dlr': int(el.findtext('sent/dlr'))
+            },
+            'failed' : int(el.findtext('failed')),
+            'queued' : int(el.findtext('failed')),
+            'status' : el.findtext('status').split(' ', 2)[0]
+        })
+
     return result

@@ -6,7 +6,12 @@ import os
 
 import kannel_util
 
+def make_names(id, admin_id):
+    return (admin_id or id, 
+            "%s / %s" % (id, admin_id) if admin_id and admin_id != id else id)
+
 def print_config():
+    print "multigraph kannel_sms"
     print "graph_order in out"
     print "graph_title Kannel SMS throughput"
     print "graph_vlabel messages received (-) / sent (+) per ${graph_period}"
@@ -23,14 +28,43 @@ def print_config():
     print "out.negative in"
     print "out.min 0"
 
+    status = kannel_util.get_status()
+    for smsc in status['smscs']:
+        (name, full_name) = make_names(smsc['id'], smsc.get('admin_id'))
+
+        print "multigraph kannel_sms.%s" % name
+        print "graph_order in out"
+        print "graph_title Kannel SMS throughput for '%s' SMSC" % full_name
+        print "graph_vlabel messages received (-) / sent (+) per ${graph_period}"
+        print "graph_category kannel"
+        print "graph_info This graph shows inbound and outbound SMS throughput"
+
+        print "in.label received"
+        print "in.type DERIVE"
+        print "in.graph no"
+        print "in.min 0"
+
+        print "out.label message rate"
+        print "out.type DERIVE"
+        print "out.negative in"
+        print "out.min 0"
+
 def print_data():
     status = kannel_util.get_status()
 
+    print "multigraph kannel_sms"
     print "in.value " + str(status['sms']['received']['total'])
     print "out.value " + str(status['sms']['sent']['total'])
 
+    for smsc in status['smscs']:
+        (name, full_name) = make_names(smsc['id'], smsc.get('admin_id'))
+
+        print "multigraph kannel_sms.%s" % name
+        print "in.value %s" % smsc['received']['sms']
+        print "out.value %s" % smsc['sent']['sms']
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "config":
-	print_config()
+        print_config()
     else:
         print_data()
