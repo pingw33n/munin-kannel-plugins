@@ -2,7 +2,8 @@ import urllib2
 from xml.etree.ElementTree import XML
 import os
 
-def get_status(url = os.environ['STATUS_URL']):
+def get_status(url = None):
+    url = url or os.environ['STATUS_URL']
     response = urllib2.urlopen(url)
     try:
         xml = XML(response.read())
