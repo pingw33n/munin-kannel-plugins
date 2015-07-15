@@ -40,7 +40,7 @@ def get_status(url = os.environ['STATUS_URL']):
                 'dlr': int(el.findtext('dlr/sent') or el.findtext('sent/dlr'))
             },
             'failed' : int(el.findtext('failed')),
-            'queued' : int(el.findtext('failed')),
+            'queued' : int(el.findtext('queued')),
             'status' : el.findtext('status').split(' ', 2)[0]
         })
 
