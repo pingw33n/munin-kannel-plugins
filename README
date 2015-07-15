@@ -1,5 +1,7 @@
 Munin plugins to monitor Kannel. 
 
+Supported stable Kannel versions: 1.4.0 and higher.
+
 Plugins included:
 
 - SMS throughput (sent/received message rate)
